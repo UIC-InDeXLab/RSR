@@ -1,0 +1,8 @@
+jupyter
+pandas
+numpy
+
+
+#transformers
+# torch
+python-dotenv
