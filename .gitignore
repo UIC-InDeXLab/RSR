@@ -3,3 +3,5 @@ venv
 *.backup
 .env
 .ipynb_checkpoints/*
+**/**/*.pyc
+.idea/*
