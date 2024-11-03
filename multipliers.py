@@ -137,7 +137,7 @@ class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
         result = np.empty(self._k)
         for i in range(self._k, 0, -1):
             result[i - 1] = np.sum(segmented_sum[1::2])
-            segmented_sum = segmented_sum[::2] + segmented_sum[1::2]
+            segmented_sum = segmented_sum[::2] + segmented_sum[1::2] # TODO: reuse [1::2]
         return result
 
     def multiply(self, v):
