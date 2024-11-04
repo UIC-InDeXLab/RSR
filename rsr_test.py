@@ -27,7 +27,7 @@ class TestRSRMultiplier(unittest.TestCase):
 
         A = generate_random_binary_matrix(self.n)
         expected_result = NaiveMultiplier(A).multiply(self.v)
-        rsr_multiplier = RSRBinaryMultiplier(A)
+        rsr_multiplier = RSRBinaryMultiplier(A, k=3)
         rsr_result = rsr_multiplier.multiply(self.v)
 
         np.testing.assert_allclose(rsr_result, expected_result, rtol=1e-6, atol=1e-6)

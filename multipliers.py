@@ -28,10 +28,10 @@ class NaiveMultiplier(MatrixMultiplier):
 
 
 class RSRBinaryMultiplier(MatrixMultiplier):
-    def __init__(self, A):
+    def __init__(self, A, k: int = None):
         super().__init__(A)
-        self._k = int(math.log(self.n, 2) - math.log(math.log(self.n, 2), 2))
-        self._blocks_permutations, self._padding = self.preprocess(self._k)
+        self._k = k if k is not None else int(math.log(self.n, 2) - math.log(math.log(self.n, 2), 2))
+        self._blocks_permutations, self._padding = self.preprocess(self.k)
         self._A = None
 
     @property
@@ -115,11 +115,11 @@ class RSRBinaryMultiplier(MatrixMultiplier):
 
 
 class RSRTernaryMultiplier(RSRBinaryMultiplier):
-    def __init__(self, A):
+    def __init__(self, A, k:int = None):
         super().__init__(A)
         self._B1, self._B2 = RSRTernaryMultiplier.unpack_matrices(A)
-        self._rsr_B1 = RSRBinaryMultiplier(self._B1)
-        self._rsr_B2 = RSRBinaryMultiplier(self._B2)
+        self._rsr_B1 = RSRBinaryMultiplier(self._B1, k=k)
+        self._rsr_B2 = RSRBinaryMultiplier(self._B2, k=k)
 
     @staticmethod
     def unpack_matrices(matrix):
@@ -134,10 +134,10 @@ class RSRTernaryMultiplier(RSRBinaryMultiplier):
 
 class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
     def _faster_mult(self, segmented_sum):
-        result = np.empty(self._k)
-        for i in range(self._k, 0, -1):
+        result = np.empty(self.k)
+        for i in range(self.k, 0, -1):
             result[i - 1] = np.sum(segmented_sum[1::2])
-            segmented_sum = segmented_sum[::2] + segmented_sum[1::2] # TODO: reuse [1::2]
+            segmented_sum = segmented_sum[::2] + segmented_sum[1::2]  # TODO: reuse [1::2]
         return result
 
     def multiply(self, v):
@@ -158,11 +158,11 @@ class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
 
 
 class RSRPlusPlusTernaryMultiplier(RSRPlusPlusBinaryMultiplier):
-    def __init__(self, A):
+    def __init__(self, A, k: int = None):
         super().__init__(A)
         self._B1, self._B2 = RSRPlusPlusTernaryMultiplier.unpack_matrices(A)
-        self._rsr_B1 = RSRPlusPlusBinaryMultiplier(self._B1)
-        self._rsr_B2 = RSRPlusPlusBinaryMultiplier(self._B2)
+        self._rsr_B1 = RSRPlusPlusBinaryMultiplier(self._B1, k = k)
+        self._rsr_B2 = RSRPlusPlusBinaryMultiplier(self._B2, k = k)
 
     @staticmethod
     def unpack_matrices(matrix):
