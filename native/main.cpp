@@ -29,7 +29,7 @@ vector<int> copy(const vector<int>& v) {
     return copied;
 }
 
-int main() {
+void compare_time() {
     int n;
     int k;
     vector<int> result;
@@ -51,22 +51,22 @@ int main() {
         vector<int> v = generateRandomVector(n);
         vector<vector<int>> bin_k = generateBinaryMatrix(k);
 
-        // RSR
-        cout << "RSR|Preprocessing..." << endl << flush;
+        // Preprocess
+        cout << "Preprocessing..." << endl << flush;
         copied_mat = copy(mat);
         auto perm_seg = preprocess(copied_mat, k);
 
-        cout << "RSR|Inference" << flush;
+        // Naive
+        cout << "Naive|Multiplication" << flush;
         agg = 0;
         for (int j = 0; j < 10; j++) {
-            copied_v = copy(v);
             start = high_resolution_clock::now();
-            result = rsr_inference(copied_v, perm_seg.first, perm_seg.second, bin_k, k);
+            result = vectorMatrixMultiply(v, mat);
             end = high_resolution_clock::now();
             agg += duration_cast<milliseconds>(end - start).count();
-            cout << "." << flush;
+            cout << ".";
         }
-        cout << endl << "RSR|Time: " << agg / 10 << endl << flush;
+        cout << endl << "Naive|Time: " << agg / 10 << endl << flush;
 
         // RSRPP
         cout << "RSRPP|Inference" << flush;
@@ -81,18 +81,80 @@ int main() {
         }
         cout << endl << "RSRPP|Time: " << agg / 10 << endl << flush;
 
-        // Naive
-        cout << "Naive|Multiplication" << flush;
+        // RSR
+        cout << "RSR|Inference" << flush;
         agg = 0;
         for (int j = 0; j < 10; j++) {
+            copied_v = copy(v);
             start = high_resolution_clock::now();
-            result = vectorMatrixMultiply(v, mat);
+            result = rsr_inference(copied_v, perm_seg.first, perm_seg.second, bin_k, k);
             end = high_resolution_clock::now();
             agg += duration_cast<milliseconds>(end - start).count();
-            cout << ".";
+            cout << "." << flush;
         }
-        cout << endl << "Naive|Time: " << agg / 10 << endl << flush;
+        cout << endl << "RSR|Time: " << agg / 10 << endl << flush;
+
     }
 
+}
+
+void compare_k() {
+    int n = pow(2, 15);
+    int k;
+    vector<int> result;
+    vector<int> copied_v;
+    vector<vector<int>> copied_mat;
+    auto start = high_resolution_clock::now();
+    auto end = start;
+    int agg = 0;
+
+    for (int k = 2; k <= 13; k++) {
+        cout << "k = " << k << endl << flush;
+
+        // Generate random
+        vector<vector<int>> mat = generateBinaryRandomMatrix(n);
+        vector<int> v = generateRandomVector(n);
+        vector<vector<int>> bin_k = generateBinaryMatrix(k);
+
+        // Preprocess
+        cout << "Preprocessing..." << endl << flush;
+        copied_mat = copy(mat);
+        auto perm_seg = preprocess(copied_mat, k);
+
+        // RSRPP
+        cout << "RSRPP|Inference" << flush;
+        agg = 0;
+        for (int j = 0; j < 10; j++) {
+            copied_v = copy(v);
+            start = high_resolution_clock::now();
+            result = rsr_pp_inference(copied_v, perm_seg.first, perm_seg.second, k);
+            end = high_resolution_clock::now();
+            agg += duration_cast<milliseconds>(end - start).count();
+            cout << "." << flush;
+        }
+        cout << endl << "RSRPP|Time: " << agg / 10 << endl << flush;
+
+        // RSR
+        cout << "RSR|Inference" << flush;
+        agg = 0;
+        for (int j = 0; j < 10; j++) {
+            copied_v = copy(v);
+            start = high_resolution_clock::now();
+            result = rsr_inference(copied_v, perm_seg.first, perm_seg.second, bin_k, k);
+            end = high_resolution_clock::now();
+            agg += duration_cast<milliseconds>(end - start).count();
+            cout << "." << flush;
+        }
+        cout << endl << "RSR|Time: " << agg / 10 << endl << flush;
+    }
+}
+
+int main() {
+    // compare_time();
+    compare_k();
+
+    // log(N) = [11, 12, 13, 14, 15, 16]
+    // RSRPP Best K = [5, 7, 8, 8, ]
+    // RSR Best K = [5, 5, 5, 6, 6]
     return 0;
 }
