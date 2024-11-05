@@ -99,7 +99,7 @@ void compare_time() {
 }
 
 void compare_k() {
-    int n = pow(2, 15);
+    int n = pow(2, 16);
     int k;
     vector<int> result;
     vector<int> copied_v;
@@ -154,7 +154,7 @@ int main() {
     compare_k();
 
     // log(N) = [11, 12, 13, 14, 15, 16]
-    // RSRPP Best K = [5, 7, 8, 8, ]
-    // RSR Best K = [5, 5, 5, 6, 6]
+    // RSRPP Best K = [5, 7, 8, 8, 9, 10]
+    // RSR Best K = [5, 5, 5, 6, 6, 6]
     return 0;
 }
