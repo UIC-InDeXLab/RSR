@@ -1,5 +1,6 @@
 import math
 from abc import abstractmethod, ABC
+from pympler import asizeof
 
 import numpy as np
 
@@ -93,6 +94,9 @@ class RSRBinaryMultiplier(MatrixMultiplier):
             segment_indices = self.find_segment_indices(block_matrix, permutations)
 
             blocks_permutations.append((permutations, segment_indices))
+
+        total_memory = asizeof.asizeof(blocks_permutations)
+        print(f"Total memory for blocks_permutations: {total_memory} bytes")
 
         return blocks_permutations, padding
 
