@@ -1,8 +1,9 @@
 import math
 from abc import abstractmethod, ABC
-from pympler import asizeof
+from typing import Type
 
 import numpy as np
+from pympler import asizeof
 
 
 class MatrixMultiplier(ABC):
@@ -47,28 +48,27 @@ class RSRBinaryMultiplier(MatrixMultiplier):
     @staticmethod
     def find_segment_indices(matrix, permutation):
         sorted_matrix = matrix[permutation]
-        n, k = matrix.shape
+        n, k = sorted_matrix.shape
 
-        binary_groups = [format(i, f'0{k}b') for i in range(2 ** k)]
-        segment_indices = {group: (0, 0) for group in binary_groups}
+        segment_start_indices = np.full(2 ** k, n, dtype=int)
 
-        current_row = None
-        start_index = 0
+        current_row_str = format(0, f'0{k}b')
+        current_row_decimal = 0
+        last_row_decimal = None
+        segment_start_indices[current_row_decimal] = 0
 
         for i, row in enumerate(sorted_matrix):
             row_str = ''.join(map(str, row))
 
-            if row_str != current_row:
-                if current_row is not None:
-                    segment_indices[current_row] = (start_index, i)
+            if row_str != current_row_str:
+                segment_start_indices[int(row_str, 2)] = i
+                last_row_decimal = current_row_decimal
+                current_row_decimal = int(row_str, 2)
+                current_row_str = row_str
+                for r in range(last_row_decimal + 1, current_row_decimal):
+                    segment_start_indices[r] = i
 
-                current_row = row_str
-                start_index = i
-
-        if current_row is not None:
-            segment_indices[current_row] = (start_index, len(sorted_matrix))
-
-        return segment_indices
+        return segment_start_indices
 
     @staticmethod
     def generate_binary_matrix(k):
@@ -110,20 +110,26 @@ class RSRBinaryMultiplier(MatrixMultiplier):
             permuted_vector = v[permutation]
             cumsum_arr = np.cumsum(permuted_vector)
             cumsum_arr = np.insert(cumsum_arr, 0, 0)
-            for group, (start, end) in segment_indices.items():
-                segmented_sum[int(group, 2)] = cumsum_arr[end] - cumsum_arr[start]
+            for j, start in enumerate(segment_indices):
+                end = segment_indices[j + 1] if j + 1 < len(segment_indices) else len(cumsum_arr) - 1
+                segmented_sum[j] = cumsum_arr[end] - cumsum_arr[start]
 
             results[i * self.k:i * self.k + self.k] = (naive_multiplier.multiply(segmented_sum))
 
         return results[:-self._padding] if self._padding > 0 else results
 
 
-class RSRTernaryMultiplier(RSRBinaryMultiplier):
-    def __init__(self, A, k:int = None):
+class RSRTernaryMultiplier(MatrixMultiplier):
+    def __init__(self, A, k: int = None):
         super().__init__(A)
         self._B1, self._B2 = RSRTernaryMultiplier.unpack_matrices(A)
-        self._rsr_B1 = RSRBinaryMultiplier(self._B1, k=k)
-        self._rsr_B2 = RSRBinaryMultiplier(self._B2, k=k)
+        bin_class = self.__binary_multiplier_class__
+        self._rsr_B1 = bin_class(self._B1, k=k)
+        self._rsr_B2 = bin_class(self._B2, k=k)
+
+    @property
+    def __binary_multiplier_class__(self) -> Type[RSRBinaryMultiplier]:
+        return RSRBinaryMultiplier
 
     @staticmethod
     def unpack_matrices(matrix):
@@ -152,8 +158,9 @@ class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
             permuted_vector = v[permutation]
             cumsum_arr = np.cumsum(permuted_vector)
             cumsum_arr = np.insert(cumsum_arr, 0, 0)
-            for group, (start, end) in segment_indices.items():
-                segmented_sum[int(group, 2)] = cumsum_arr[end] - cumsum_arr[start]
+            for j, start in enumerate(segment_indices):
+                end = segment_indices[j + 1] if j + 1 < len(segment_indices) else len(cumsum_arr) - 1
+                segmented_sum[j] = cumsum_arr[end] - cumsum_arr[start]
 
             # CHANGE
             results[i * self.k:i * self.k + self.k] = (self._faster_mult(segmented_sum))
@@ -161,19 +168,7 @@ class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
         return results[:-self._padding] if self._padding > 0 else results
 
 
-class RSRPlusPlusTernaryMultiplier(RSRPlusPlusBinaryMultiplier):
-    def __init__(self, A, k: int = None):
-        super().__init__(A)
-        self._B1, self._B2 = RSRPlusPlusTernaryMultiplier.unpack_matrices(A)
-        self._rsr_B1 = RSRPlusPlusBinaryMultiplier(self._B1, k = k)
-        self._rsr_B2 = RSRPlusPlusBinaryMultiplier(self._B2, k = k)
-
-    @staticmethod
-    def unpack_matrices(matrix):
-        B1 = (matrix == 1).astype(int)
-        B2 = (matrix == -1).astype(int)
-
-        return B1, B2
-
-    def multiply(self, v):
-        return self._rsr_B1.multiply(v) - self._rsr_B2.multiply(v)
+class RSRPlusPlusTernaryMultiplier(RSRTernaryMultiplier):
+    @property
+    def __binary_multiplier_class__(self) -> Type[RSRBinaryMultiplier]:
+        return RSRPlusPlusBinaryMultiplier
