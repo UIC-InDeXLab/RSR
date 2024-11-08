@@ -17,7 +17,7 @@ class TestRSRMultiplier(unittest.TestCase):
             random_vector = np.random.randint(low, high, size)
             return random_vector
 
-        self.n = 2**12
+        self.n = 2 ** 12
         self.v = generate_random_int_vector(self.n)
 
     def test_rsr_multiplier(self):
@@ -56,7 +56,7 @@ class TestRSRMultiplier(unittest.TestCase):
         rsr_pp_result = rsr_pp_multiplier.multiply(self.v)
 
         np.testing.assert_allclose(rsr_pp_result, expected_result, rtol=1e-6, atol=1e-6)
-    
+
     def test_rsr_pp_ternary_multiplier(self):
         def generate_random_ternary_matrix(n):
             ternary_matrix = np.random.randint(low=-1, high=2, size=(n, n))
