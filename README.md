@@ -1,20 +1,36 @@
-Paper: [Optimized Inference for 1.58-bit LLMs: A Time and Memory-Efficient Algorithm for Binary and Ternary Matrix Multiplication](https://arxiv.org/abs/2411.06360).
+# 🔥 Optimized Inference for 1.58-bit LLMs: Efficient Binary and Ternary Matrix Multiplication
 
-There are two sets of experiments: NumPy implementation and Native C++ implementations.
+This repository contains code and experiments for the paper, [Optimized Inference for 1.58-bit LLMs: A Time and Memory-Efficient Algorithm for Binary and Ternary Matrix Multiplication](https://arxiv.org/abs/2411.06360).
 
-# NumPy Implementations
+The codebase provides two sets of experiments: a NumPy-based implementation and native C++ implementations.
 
-# Native Implementation
-The native implementations are inside `native` directory.
+---
 
-## Requirements
-In order to run the `c++` code, you need `clang++` installed.
+## 🧮 NumPy Implementations
 
-## Run Time Comparison
-To get the report on time comparison for different values `n`, use `./run_time_compare.sh [algorithm]`. For `algorithm` use either of `naive`, `rsr`, or `rsrpp`.
+The NumPy implementations of the matrix multipliers (`Naive`, `RSR`, and `RSR++`) are found in `multiplier.py`. You can use these multipliers by instantiating a `Multiplier` object and passing a weight matrix `A` (required) and an optional parameter `k`. Initialization automatically includes any necessary preprocessing steps, and you can perform inference on input vectors using the `multiply` method.
 
-## K Optmization
-To run the `k` optmization code, run `./run_k_optmization.sh`. This code checks the running time of different values `k` for a specific `n` hard-coded in `k_optmization.cpp`.
+### ⚙️ Requirements
+Ensure you have `Python >= 3.6` installed, along with all packages listed in `requirements.txt`.
 
-## Run Tests
-There are some tests written to verify the correctness of the algorithms. In order to run them use `./run_test.sh`
+### ✅ Testing the Multipliers
+To validate the correctness of the `RSR` and `RSR++` multipliers, run `rsr_tests.py`. This script randomly generates a weight matrix and an input vector, then compares the results of the multiplication with the ground truth.
+
+---
+
+## 💻 Native C++ Implementations
+
+Native C++ implementations for the matrix multipliers are available in the `native` directory.
+
+### ⚙️ Requirements
+To compile and run the C++ code, you’ll need `clang++` installed.
+
+### ⏱️ Run Time Comparison
+To compare run times for different values of `n` across algorithms, use the script `./run_time_compare.sh [algorithm]`, where `[algorithm]` can be one of `naive`, `rsr`, or `rsrpp`.
+
+### 🔧 `k` Optimization
+To test various values of `k` for runtime optimization, run `./run_k_optimization.sh`. This script benchmarks the run times for different `k` values, with the target `n` value specified in `k_optimization.cpp`.
+
+### 🧪 Running Tests
+Several tests are provided to ensure algorithmic correctness. Run these tests by executing `./run_test.sh`.
+
