@@ -14,7 +14,7 @@ The NumPy implementations of the matrix multipliers (`Naive`, `RSR`, and `RSR++`
 Ensure you have `Python >= 3.6` installed, along with all packages listed in `requirements.txt`.
 
 ### ✅ Testing the Multipliers
-To validate the correctness of the `RSR` and `RSR++` multipliers, run `rsr_tests.py`. This script randomly generates a weight matrix and an input vector, then compares the results of the multiplication with the ground truth.
+To validate the correctness of the `RSR` and `RSR++` multipliers, run `rsr_test.py`. This script randomly generates a weight matrix and an input vector, then compares the results of the multiplication with the ground truth.
 
 ---
 
