@@ -1,6 +1,6 @@
 # 🔥 Optimized Inference for 1.58-bit LLMs: Efficient Binary and Ternary Matrix Multiplication
 
-This repository contains code and experiments for the paper, [Optimized Inference for 1.58-bit LLMs: A Time and Memory-Efficient Algorithm for Binary and Ternary Matrix Multiplication](https://arxiv.org/abs/2411.06360).
+This repository contains code and experiments for the paper, [An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks](https://arxiv.org/abs/2411.06360).
 
 The codebase provides two sets of experiments: a NumPy-based implementation and native C++ implementations.
 
