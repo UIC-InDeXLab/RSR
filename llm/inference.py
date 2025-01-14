@@ -1,6 +1,7 @@
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers.models.llama.modeling_llama import *
+from torch import Neura
 
 # Load a pretrained BitNet model
 model = "merfanian/Bitnet-Llama-700M"

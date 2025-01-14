@@ -6,3 +6,5 @@ venv
 **/**/*.pyc
 .idea/*
 ./native/main
+.venv
+hf_token.txt
