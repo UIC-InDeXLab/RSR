@@ -3,6 +3,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, LlamaForCausalLM, 
 from huggingface_hub import login
 import time
 import os
+from patch import patch
+
+patch()
 
 # https://huggingface.co/HF1BitLLM/Llama3-8B-1.58-100B-tokens
 
