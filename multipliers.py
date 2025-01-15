@@ -5,11 +5,14 @@ from typing import Type
 import numpy as np
 from pympler import asizeof
 
-
+'''
+Calculates the multiplication of an integer vector of size n to a matrix of size (n, m) 
+'''
 class MatrixMultiplier(ABC):
     def __init__(self, A):
         self._A = A
-        self._n = len(A)
+        self._n = len(A) # rows count
+        self._m = len(A[0]) # columns count
 
     @abstractmethod
     def multiply(self, v):
@@ -22,6 +25,10 @@ class MatrixMultiplier(ABC):
     @property
     def n(self):
         return self._n
+    
+    @property
+    def m(self):
+        return self._m
 
 
 class NaiveMultiplier(MatrixMultiplier):
@@ -76,8 +83,8 @@ class RSRBinaryMultiplier(MatrixMultiplier):
         binary_matrix = np.array([list(map(int, np.binary_repr(i, width=k))) for i in range(num_rows)])
         return binary_matrix
 
-    def preprocess(self, k):
-        padding = (k - (self.n % k)) % k  # Padding to make divisible by k
+    def preprocess(self, k, debug=True):
+        padding = (k - (self.m % k)) % k  # Padding to make column count divisible by k
 
         if padding > 0:
             A_padded = np.pad(self.A, ((0, 0), (0, padding)), mode='constant')
@@ -86,7 +93,7 @@ class RSRBinaryMultiplier(MatrixMultiplier):
 
         blocks_permutations = []
 
-        for split_idx in range(0, A_padded.shape[1], k):
+        for split_idx in range(0, self.m, k):
             block_matrix = A_padded[:, split_idx:split_idx + k]
 
             permutations = self.find_permutations(block_matrix)
@@ -95,13 +102,14 @@ class RSRBinaryMultiplier(MatrixMultiplier):
 
             blocks_permutations.append((permutations, segment_indices))
 
-        total_memory = asizeof.asizeof(blocks_permutations)
-        print(f"Total memory for blocks_permutations: {total_memory} bytes")
+        if debug:
+            total_memory = asizeof.asizeof(blocks_permutations)
+            print(f"Total memory for blocks_permutations: {total_memory} bytes")
 
         return blocks_permutations, padding
 
     def multiply(self, v):
-        results = np.empty(self.n + self._padding, dtype=int)
+        results = np.empty(self.m + self._padding, dtype=int)
         binary_matrix = self.generate_binary_matrix(self.k)
         naive_multiplier = NaiveMultiplier(binary_matrix)
 
@@ -151,7 +159,7 @@ class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
         return result
 
     def multiply(self, v):
-        results = np.empty(self.n + self._padding, dtype=int)
+        results = np.empty(self.m + self._padding, dtype=int)
 
         for i, (permutation, segment_indices) in enumerate(self._blocks_permutations):
             segmented_sum = np.empty(2 ** self.k)

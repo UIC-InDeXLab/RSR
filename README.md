@@ -14,7 +14,7 @@ The NumPy implementations of the matrix multipliers (`Naive`, `RSR`, and `RSR++`
 Ensure you have `Python >= 3.6` installed, along with all packages listed in `requirements.txt`.
 
 ### ✅ Testing the Multipliers
-To validate the correctness of the `RSR` and `RSR++` multipliers, run `rsr_test.py`. This script randomly generates a weight matrix and an input vector, then compares the results of the multiplication with the ground truth.
+To validate the correctness of the `RSR` and `RSR++` multipliers, run `rsr_test.py`. This script randomly generates a weight matrix and an input vector, then compares the results of the multiplication with the ground truth. To run the tests use `./run_test.sh`.
 
 ---
 
@@ -32,5 +32,5 @@ To compare run times for different values of `n` across algorithms, use the scri
 To test various values of `k` for runtime optimization, run `./run_k_optimization.sh`. This script benchmarks the run times for different `k` values, with the target `n` value specified in `k_optimization.cpp`.
 
 ### 🧪 Running Tests
-Several tests are provided to ensure algorithmic correctness. Run these tests by executing `./run_test.sh`.
+Several tests are provided to ensure algorithmic correctness. Run these tests by executing `./run_test.sh` inside `native` directory.
 
