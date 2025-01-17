@@ -9,10 +9,13 @@ from pympler import asizeof
 Calculates the multiplication of an integer vector of size n to a matrix of size (n, m) 
 '''
 class MatrixMultiplier(ABC):
-    def __init__(self, A):
+    def __init__(self, A=None):
         self._A = A
-        self._n = len(A) # rows count
-        self._m = len(A[0]) # columns count
+        self._n = 0
+        self._m = 0
+        if A is not None:
+            self._n = len(A) # rows count
+            self._m = len(A[0]) # columns count
 
     @abstractmethod
     def multiply(self, v):
@@ -29,18 +32,43 @@ class MatrixMultiplier(ABC):
     @property
     def m(self):
         return self._m
+    
+    '''
+    Dump the only necessary `data` to run the `multiply()`
+    '''
+    @abstractmethod
+    def dump(self):
+        pass
+
+    '''
+    Given the output of `dump()`, create a minimal object
+    '''
+    @classmethod
+    def load(cls, data):
+        pass
 
 
 class NaiveMultiplier(MatrixMultiplier):
     def multiply(self, v):
         return np.dot(v, self.A)
+    
+    def dump(self):
+        return self.A
+    
+    @classmethod
+    def load(cls, data):
+        return cls(A=data)
 
 
 class RSRBinaryMultiplier(MatrixMultiplier):
-    def __init__(self, A, k: int = None):
+    def __init__(self, A=None, k: int = None):
         super().__init__(A)
-        self._k = k if k is not None else int(math.log(self.n, 2) - math.log(math.log(self.n, 2), 2))
-        self._blocks_permutations, self._padding = self.preprocess(self.k)
+        if k is None and A is not None:
+            self._k = int(math.log(self.n, 2) - math.log(math.log(self.n, 2), 2))
+        else:
+            self._k = k
+        if A is not None:
+            self._blocks_permutations, self._padding = self.preprocess(self.k)
         self._A = None
 
     @property
@@ -125,15 +153,38 @@ class RSRBinaryMultiplier(MatrixMultiplier):
             results[i * self.k:i * self.k + self.k] = (naive_multiplier.multiply(segmented_sum))
 
         return results[:-self._padding] if self._padding > 0 else results
+    
+    def dump(self):
+        return (
+            self.m, 
+            self.k,
+            [np.concatenate((per, seg)) for (per, seg) in self._blocks_permutations],
+            self._padding
+        )
+    
+    @classmethod
+    def load(cls, data):
+        m = data[0]
+        k = data[1]
+        block_permutation = [(row[:-2**k], row[-2**k:]) for row in data[2]]
+        padding = data[3]
+
+        obj = cls()
+        obj._m = m
+        obj._k = k
+        obj._blocks_permutations = block_permutation
+        obj._padding = padding
+        return obj
 
 
 class RSRTernaryMultiplier(MatrixMultiplier):
-    def __init__(self, A, k: int = None):
+    def __init__(self, A=None, k: int = None):
         super().__init__(A)
-        self._B1, self._B2 = RSRTernaryMultiplier.unpack_matrices(A)
-        bin_class = self.__binary_multiplier_class__
-        self._rsr_B1 = bin_class(self._B1, k=k)
-        self._rsr_B2 = bin_class(self._B2, k=k)
+        if A is not None:
+            self._B1, self._B2 = RSRTernaryMultiplier.unpack_matrices(A)
+            bin_class = self.__binary_multiplier_class__
+            self._rsr_B1 = bin_class(self._B1, k=k)
+            self._rsr_B2 = bin_class(self._B2, k=k)
 
     @property
     def __binary_multiplier_class__(self) -> Type[RSRBinaryMultiplier]:
@@ -148,6 +199,22 @@ class RSRTernaryMultiplier(MatrixMultiplier):
 
     def multiply(self, v):
         return self._rsr_B1.multiply(v) - self._rsr_B2.multiply(v)
+
+    def dump(self):
+        return (
+            self._rsr_B1.dump(),
+            self._rsr_B2.dump()
+        )
+
+    @classmethod
+    def load(cls, data):
+        B1 = RSRBinaryMultiplier.load(data[0])
+        B2 = RSRBinaryMultiplier.load(data[1])
+
+        obj = cls()
+        obj._rsr_B1 = B1
+        obj._rsr_B2 = B2
+        return obj
 
 
 class RSRPlusPlusBinaryMultiplier(RSRBinaryMultiplier):
