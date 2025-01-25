@@ -1,0 +1,12 @@
+time,response,device,method
+83.65599226951599,What is the capital of France?,cpu,Naive
+70.2415361404419,Who wrote Romeo and Juliet?,cpu,Naive
+104.903892993927,What is 2 + 2?,cpu,Naive
+117.28643202781677,What is the largest planet in the solar system?,cpu,Naive
+68.62567782402039,Who painted the Mona Lisa?,cpu,Naive
+116.31812477111816,What is the square root of 16?,cpu,Naive
+96.28496980667114,What is the tallest mountain on Earth?,cpu,Naive
+139.18795895576477,What is the name of the first man on the moon?,cpu,Naive
+103.69537496566772,What is the currency of the United States?,cpu,Naive
+68.90749764442444,"How many continents are there?
+",cpu,Naive

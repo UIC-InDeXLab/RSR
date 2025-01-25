@@ -48,14 +48,14 @@ def preprocess_patch(self, model, *args, **kwargs):
                     print(f"Loading tensors: {counter} / {224}", end="\r")
                     with open(f"../data/tensor_{uid}.pt", "rb") as f:
                         data = torch.load(f, weights_only=True)
-                        bit_linear.register_buffer("rsr_matrix", pack_weights(data.to(device)))
+                        bit_linear.register_buffer("rsr_matrix", data.to(device))
                 else:
                     print(f"Building tensors: {counter} / {224}", end="\r")
                     multiplier = RSRTernaryMultiplier(
                         A=matrix_158, 
                         k=2 # all matrices are within [2^12, 2^13]
                     )
-                    data = multiplier.get_agg_matrix()
+                    data = pack_weights(multiplier.get_agg_matrix())
                     bit_linear.register_buffer("rsr_matrix", data.to(device))
                     with open(f"../data/tensor_{uid}.pt", "wb") as f:
                         torch.save(data, f)
