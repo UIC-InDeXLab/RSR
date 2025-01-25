@@ -8,3 +8,5 @@ venv
 ./native/main
 .venv
 hf_token.txt
+llm/data/*
+llm/data

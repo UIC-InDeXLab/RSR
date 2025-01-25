@@ -1,0 +1,12 @@
+time,response,device,method
+43.69010019302368,What is the capital of France? Paris,cpu,RSR
+38.13652014732361,Who wrote Romeo and Juliet? William,cpu,RSR
+49.714271545410156,What is 2 + 2? ,cpu,RSR
+59.774543046951294,What is the largest planet in the solar system? What,cpu,RSR
+44.45979595184326,Who painted the Mona Lisa? Leonardo,cpu,RSR
+54.104992389678955,What is the square root of 16? ,cpu,RSR
+50.20992565155029,"What is the tallest mountain on Earth?|
+",cpu,RSR
+69.38914155960083,What is the name of the first man on the moon? What,cpu,RSR
+54.73750925064087,What is the currency of the United States?,cpu,RSR
+38.925952672958374,How many continents are there? How,cpu,RSR
