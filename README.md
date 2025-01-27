@@ -1,8 +1,28 @@
 # 🔥 An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks
 
-This repository contains code and experiments for the paper, [An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks](https://arxiv.org/abs/2411.06360).
+<!-- This repository contains code and experiments for the paper, [An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks](https://arxiv.org/abs/2411.06360).-->
 
-The codebase provides two sets of experiments: a NumPy-based implementation and native C++ implementations.
+<p align="center">
+  <img alt="RSR logo" src="assets/icon.png" width="170">
+</p>
+
+This repository implements **R**edundant **S**egment **R**eduction (RSR), a fast matrix multiplication algorithm designed for matrices in binary and ternary networks. The RSR method optimizes computation efficiency by a `log(n)` factor, making it particularly useful for applications in low-bit deep learning and efficient inference.
+
+The repository includes:
+- A native **C++** implementation of the RSR method for performance comparison.
+- **NumPy**-based implementations for ease of experimentation and integration into Python workflows.
+- **PyTorch** implementations with both CPU and GPU support, enabling scalable and optimized matrix operations in deep learning environments.
+
+This project aims to provide a fast and efficient approach to low-bit matrix multiplication.
+
+<p align="center">
+    【🧠 <a href="#-llm-experiments">Large Languange Models</a> | 🧮 <a href="#-numpy-implementations">NumPy</a> | 🔥 <a href="#-torch-implementations">PyTorch</a> | 💻 <a href="#-native-c-implementations">C++</a>】
+</p>
+
+<p align="center">
+  <img alt="visualization" src="assets/visual.png" width="100%">
+  <p align="center">A visualiazation of the algorithm.</p>
+</p>
 
 ---
 
@@ -41,4 +61,9 @@ Torch implementations are inside `torch_impl` directory. This implementation wor
 
 ---
 ## 🧠 LLM Experiments
-The LLM implementations are inside `llm` directory, which contains both codes for the inference on CPU and GPU in the corresponding dirs. The `patch.py` file contains patched functions for preprocessing and the new `forward` function for the `BitLinear` module. The notebook `cpu/profile.ipynb` contains an example code to apply patch and profile the running time.
+The LLM implementations are inside `llm` directory, which contains both codes for the inference on CPU and GPU in the corresponding dirs. The `patch_[cpu/gpu].py` file contains patched functions for preprocessing and the new `forward` function for the `BitLinear` module. 
+
+- The notebook `[cpu/gpu]_impl/profile.ipynb` contains an example code to apply patch and profile the running time.
+- Currently, this example works with this `1.58bit` models: [`Llama3-8B-1.58bit`](https://huggingface.co/HF1BitLLM/Llama3-8B-1.58-100B-tokens), [`Falcon3-10B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-10B-Instruct-1.58bit), and [`Falcon3-3B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-3B-Instruct-1.58bit).
+- The notebook `gpu_impl/matrix_mult_compare.ipynb` contains the code for comparing the pure matrix multiplication of `torch` and `RSR`.
+- The result of experiments on GPU is shown in the paper, **Experiments** section.
