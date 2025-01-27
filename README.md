@@ -44,6 +44,6 @@ Torch implementations are inside `torch_impl` directory. This implementation wor
 The LLM implementations are inside `llm` directory, which contains both codes for the inference on CPU and GPU in the corresponding dirs. The `patch_[cpu/gpu].py` file contains patched functions for preprocessing and the new `forward` function for the `BitLinear` module. 
 
 - The notebook `[cpu/gpu]_impl/profile.ipynb` contains an example code to apply patch and profile the running time.
-- Currently, this example works with this `1.58bit` models: `Llama3-8B-1.58bit`, `Falcon3-10B-1.58bit`, and `Falcon3-3B-1.58bit`.
+- Currently, this example works with this `1.58bit` models: [`Llama3-8B-1.58bit`](https://huggingface.co/HF1BitLLM/Llama3-8B-1.58-100B-tokens), [`Falcon3-10B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-10B-Instruct-1.58bit), and [`Falcon3-3B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-3B-Instruct-1.58bit).
 - The notebook `gpu_impl/matrix_mult_compare.ipynb` contains the code for comparing the pure matrix multiplication of `torch` and `RSR`.
 - The result of experiments on GPU is shown in the paper, **Experiments** section.
