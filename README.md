@@ -16,7 +16,7 @@ The repository includes:
 This project aims to provide a fast and efficient approach to low-bit matrix multiplication.
 
 <p align="center">
-    【🧠 <a href="#-llm-experiments">Large Languange Models</a> | 🧮 <a href="#-numpy-implementations">NumPy</a> | 🔥 <a href="#-torch-implementations">PyTorch</a> | 💻 <a href="#-native-c-implementations">C++</a>】
+    【🧠 <a href="#-llm-experiments">Large Languange Models</a> | 🧮 <a href="#-numpy-implementations">NumPy</a> | 🔥 <a href="#-torch-implementations">PyTorch</a> | 💻 <a href="#-native-c-implementations">C++</a> | 🚀 <a href="#-bitnetcpp">BitNet.cpp</a>】
 </p>
 
 <p align="center">
@@ -67,3 +67,8 @@ The LLM implementations are inside `llm` directory, which contains both codes fo
 - Currently, this example works with this `1.58bit` models: [`Llama3-8B-1.58bit`](https://huggingface.co/HF1BitLLM/Llama3-8B-1.58-100B-tokens), [`Falcon3-10B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-10B-Instruct-1.58bit), and [`Falcon3-3B-1.58bit`](https://huggingface.co/tiiuae/Falcon3-3B-Instruct-1.58bit).
 - The notebook `gpu_impl/matrix_mult_compare.ipynb` contains the code for comparing the pure matrix multiplication of `torch` and `RSR`.
 - The result of experiments on GPU is shown in the paper, **Experiments** section.
+
+---
+## 🚀 BitNet.cpp
+A PoC comparison of `RSR` with [BitNet.cpp](https://github.com/microsoft/BitNet) is implemented in `bitnetcpp` directory. It integrates the `C++` implementation of `RSR` into the `BitNet.cpp` environment. 
+- Check `bitnetcpp/README.md` for more details on building and running.
