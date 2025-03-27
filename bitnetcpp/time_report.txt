@@ -1,0 +1,52 @@
+Running with size 512
+expected result:
+-1378.00 3428.00 500.00 -508.00 -1242.00 -460.00 
+Time: 350118 ns
+bitnet result:
+-1378.00 3428.00 500.00 -508.00 -1242.00 -460.00 
+Time: 1276664 ns
+rsr result:
+-1378 3428 500 -508 -1242 -460 
+Time: 308243 ns
+
+Done
+
+Running with size 1024
+expected result:
+3460.00 -1659.00 130.00 451.00 -1508.00 -418.00 
+Time: 1074440 ns
+bitnet result:
+3460.00 -1659.00 130.00 451.00 -1508.00 -418.00 
+Time: 4248639 ns
+rsr result:
+3460 -1659 130 451 -1508 -418 
+Time: 699654 ns
+
+Done
+
+Running with size 2048
+expected result:
+-1581.00 -2271.00 -179.00 -4722.00 -5527.00 -5398.00 
+Time: 4487617 ns
+bitnet result:
+-1581.00 -2271.00 -179.00 -4722.00 -5527.00 -5398.00 
+Time: 17014569 ns
+rsr result:
+-1581 -2271 -179 -4722 -5527 -5398 
+Time: 1902799 ns
+
+Done
+
+Running with size 4096
+expected result:
+1105.00 -9406.00 -3697.00 -3121.00 4925.00 1120.00 
+Time: 17978581 ns
+bitnet result:
+1105.00 -9406.00 -3697.00 -3121.00 4925.00 1120.00 
+Time: 68087258 ns
+rsr result:
+1105 -9406 -3697 -3121 4925 1120 
+Time: 6682757 ns
+
+Done
+

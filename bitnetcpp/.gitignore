@@ -1,0 +1,67 @@
+# Compiled object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Static & Shared Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.so
+*.dll
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.run
+
+# Debug files
+*.dSYM/
+*.stackdump
+*.core
+
+# Build folders
+/build/
+/build-*/
+/cmake-build-*/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+CTestTestfile.cmake
+install_manifest.txt
+
+# VSCode & CLion
+.vscode/
+.idea/
+
+# Logs & backups
+*.log
+*.bak
+*.swp
+
+# Unit test results
+Testing/
+test_output/
+
+# Generated files
+*.generated.cpp
+*.generated.hpp
+
+# Ninja build system
+.ninja_deps
+.ninja_log
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db

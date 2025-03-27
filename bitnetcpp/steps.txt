@@ -1,0 +1,6 @@
+- Build 'BitNet.cpp'
+    - python3.9
+    - pip install -r requirements
+    - python setup_env.py --hf-repo tiiuae/Falcon3-7B-Instruct-1.58bit -q i2_s
+
+- change BitNet/include/ggml-bitnet.h to add the function [don't need this]

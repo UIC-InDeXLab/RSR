@@ -10,3 +10,5 @@ venv
 hf_token.txt
 llm/data/*
 llm/data
+.vscode
+build
