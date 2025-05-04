@@ -10,14 +10,12 @@ This repository implements **R**edundant **S**egment **R**eduction (RSR), a fast
 
 This code implements [this preprint paper](https://arxiv.org/abs/2411.06360) (accepted at `ICML'25`):
 ```
-@inproceedings{dehghankar2025efficient,
-  title     = {An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks},
-  author    = {Dehghankar, Mohsen and others},
-  booktitle = {Proceedings of the 42nd International Conference on Machine Learning (ICML)},
-  year      = {2025},
-  archivePrefix = {arXiv},
-  eprint    = {2411.06360},
-  primaryClass = {cs.LG}
+@article{dehghankar2024efficient,
+  title={An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks},
+  author={Dehghankar, Mohsen and Erfanian, Mahdi and Asudeh, Abolfazl},
+  journal={arXiv preprint arXiv:2411.06360},
+  year={2024},
+  url={https://arxiv.org/abs/2411.06360}
 }
 ```
 
