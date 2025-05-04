@@ -8,7 +8,7 @@
 
 This repository implements **R**edundant **S**egment **R**eduction (RSR), a fast matrix multiplication algorithm designed for matrices in binary and ternary networks. The RSR method optimizes computation efficiency by a `log(n)` factor, making it particularly useful for applications in low-bit deep learning and efficient inference.
 
-This code implements this [published paper](https://arxiv.org/abs/2411.06360) at `ICML'25`:
+This code implements the following [published paper](https://arxiv.org/abs/2411.06360) at `ICML'25`:
 ```
 @inproceedings{dehghankar2025efficient,
   title     = {An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks},
