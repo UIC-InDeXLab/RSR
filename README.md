@@ -13,8 +13,8 @@ This code implements [this preprint paper](https://arxiv.org/abs/2411.06360) (ac
 @article{dehghankar2024efficient,
   title={An Efficient Matrix Multiplication Algorithm for Accelerating Inference in Binary and Ternary Neural Networks},
   author={Dehghankar, Mohsen and Erfanian, Mahdi and Asudeh, Abolfazl},
-  journal={arXiv preprint arXiv:2411.06360},
-  year={2024},
+  journal={ICML'25: Proceedings of the International Conference on Machine Learning},
+  year={2025},
   url={https://arxiv.org/abs/2411.06360}
 }
 ```
