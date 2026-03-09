@@ -84,3 +84,7 @@ The LLM implementations are inside `llm` directory, which contains both codes fo
 ## 🚀 BitNet.cpp
 A PoC comparison of `RSR` with [BitNet.cpp](https://github.com/microsoft/BitNet) is implemented in `bitnetcpp` directory. It integrates the `C++` implementation of `RSR` into the `BitNet.cpp` environment. 
 - Check `bitnetcpp/README.md` for more details on building and running.
+
+---
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
